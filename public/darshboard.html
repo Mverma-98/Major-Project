@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Dashboard</h1>
+
+<h3 id="role"></h3>
+
+<button onclick="getData()">
+    Get Data
+</button>
+
+<button onclick="writeData()">
+    Write Data
+</button>
+
+<button onclick="deleteData()">
+    Delete Data
+</button>
+
+<pre id="result"></pre>
+
+<script>
+
+const token =
+    localStorage.getItem('token');
+
+const role =
+    localStorage.getItem('role');
+
+document.getElementById(
+    'role'
+).innerText =
+'Logged in as: ' + role;
+
+async function getData() {
+
+    const response =
+        await fetch('/api/data', {
+
+        headers: {
+            Authorization:
+            'Bearer ' + token
+        }
+    });
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        'result'
+    ).innerText =
+        JSON.stringify(data, null, 2);
+}
+
+async function writeData() {
+
+    const response =
+        await fetch('/api/data', {
+
+        method: 'POST',
+
+        headers: {
+            Authorization:
+            'Bearer ' + token
+        }
+    });
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        'result'
+    ).innerText =
+        JSON.stringify(data, null, 2);
+}
+
+async function deleteData() {
+
+    const response =
+        await fetch('/api/data', {
+
+        method: 'DELETE',
+
+        headers: {
+            Authorization:
+            'Bearer ' + token
+        }
+    });
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        'result'
+    ).innerText =
+        JSON.stringify(data, null, 2);
+}
+
+</script>
+
+</body>
+</html>
