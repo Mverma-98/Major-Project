@@ -30,6 +30,10 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/dashboard.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 
