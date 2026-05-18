@@ -41,7 +41,7 @@ async function login() {
         );
 
         window.location.href =
-            'dashboard.html';
+            '/dashboard.html';
 
     } else {
 

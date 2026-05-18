@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const createRateLimiter = require('./middleware/rateLimiter');
@@ -27,7 +28,7 @@ app.use(globalRateLimiter);
 
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
