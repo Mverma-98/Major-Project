@@ -2,11 +2,28 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const createRateLimiter = require('./middleware/rateLimiter');
+
+const requiredEnv = ['JWT_SECRET'];
+for (const envVar of requiredEnv) {
+  if (!process.env[envVar]) {
+    console.error(`Missing required environment variable: ${envVar}`);
+    process.exit(1);
+  }
+}
 
 const authRoutes = require('./routes/authRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
+
+const globalRateLimiter = createRateLimiter({
+  windowMs: process.env.RATE_LIMIT_WINDOW_MS ? parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) : 60 * 1000,
+  maxRequests: process.env.RATE_LIMIT_MAX_REQUESTS ? parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10) : 100,
+  message: 'Too many requests from this IP, please try again later.'
+});
+
+app.use(globalRateLimiter);
 
 app.use(bodyParser.json());
 
@@ -31,6 +48,6 @@ server.on('error', (err) => {
         process.exit(1);
     }
 
-    console.error('Server error:', err);
+    console.error('Server failed to start:', err);
     process.exit(1);
 });
