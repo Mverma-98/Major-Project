@@ -21,6 +21,10 @@
     Delete Data
 </button>
 
+<button onclick="logout()">
+    Logout
+</button>
+
 <pre id="result"></pre>
 
 <script>
@@ -98,6 +102,12 @@ async function deleteData() {
         'result'
     ).innerText =
         JSON.stringify(data, null, 2);
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/';
 }
 
 </script>
