@@ -2,114 +2,303 @@
 <html>
 <head>
     <title>Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+
+            background:
+            linear-gradient(
+                135deg,
+                #141e30,
+                #243b55
+            );
+
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .dashboard-container{
+
+            width:90%;
+            max-width:800px;
+
+            background:
+            rgba(255,255,255,0.1);
+
+            backdrop-filter: blur(12px);
+
+            border-radius:20px;
+
+            padding:40px;
+
+            box-shadow:
+            0 8px 32px rgba(
+                0,
+                0,
+                0,
+                0.3
+            );
+
+            text-align:center;
+
+            color:white;
+        }
+
+        h1{
+
+            margin-bottom:20px;
+            font-size:36px;
+        }
+
+        #role{
+
+            font-size:20px;
+            margin-bottom:30px;
+            color:#ffd369;
+        }
+
+        .button-group{
+
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        button{
+
+            border:none;
+
+            padding:14px 24px;
+
+            border-radius:12px;
+
+            font-size:16px;
+
+            cursor:pointer;
+
+            transition:0.3s;
+        }
+
+        .get-btn{
+
+            background:#00c853;
+            color:white;
+        }
+
+        .post-btn{
+
+            background:#2962ff;
+            color:white;
+        }
+
+        .delete-btn{
+
+            background:#d50000;
+            color:white;
+        }
+
+        button:hover{
+
+            transform:translateY(-3px);
+        }
+
+        #result{
+
+            margin-top:30px;
+
+            background:
+            rgba(
+                255,
+                255,
+                255,
+                0.15
+            );
+
+            padding:20px;
+
+            border-radius:15px;
+
+            text-align:left;
+
+            overflow:auto;
+
+            max-height:300px;
+
+            color:#fff;
+        }
+
+        .logout-btn{
+
+            margin-top:25px;
+
+            background:#ff9800;
+
+            color:white;
+        }
+
+    </style>
 </head>
+
 <body>
 
-<h1>Dashboard</h1>
+<div class="dashboard-container">
 
-<h3 id="role"></h3>
+    <h1>
+        API Access Dashboard
+    </h1>
 
-<button onclick="getData()">
-    Get Data
-</button>
+    <h3 id="role"></h3>
 
-<button onclick="writeData()">
-    Write Data
-</button>
+    <div class="button-group">
 
-<button onclick="deleteData()">
-    Delete Data
-</button>
+        <button
+            class="get-btn"
+            onclick="getData()">
 
-<button onclick="logout()">
-    Logout
-</button>
+            Get Data
+        </button>
 
-<div id="result"></div>
+        <button
+            class="post-btn"
+            onclick="writeData()">
+
+            Write Data
+        </button>
+
+        <button
+            class="delete-btn"
+            onclick="deleteData()">
+
+            Delete Data
+        </button>
+
+    </div>
+
+    <pre id="result">
+API Response will appear here...
+    </pre>
+
+    <button
+        class="logout-btn"
+        onclick="logout()">
+
+        Logout
+    </button>
+
+</div>
 
 <script>
 
-const token = localStorage.getItem('token');
-if (!token) {
-  window.location.href = '/';
-}
+const token =
+localStorage.getItem('token');
 
 const role =
-    localStorage.getItem('role');
+localStorage.getItem('role');
+
+if(!token){
+
+    window.location.href =
+    'index.html';
+}
 
 document.getElementById(
-    'role'
+'role'
 ).innerText =
 'Logged in as: ' + role;
 
-async function getData() {
+async function getData(){
 
     const response =
-        await fetch('/api/data', {
+    await fetch('/api/data',{
 
-        headers: {
+        headers:{
             Authorization:
             'Bearer ' + token
         }
     });
 
     const data =
-        await response.json();
+    await response.json();
 
     document.getElementById(
-        'result'
+    'result'
     ).innerText =
-        data.message || JSON.stringify(data, null, 2);
+    JSON.stringify(
+        data,
+        null,
+        2
+    );
 }
 
-async function writeData() {
+async function writeData(){
 
     const response =
-        await fetch('/api/data', {
+    await fetch('/api/data',{
 
-        method: 'POST',
+        method:'POST',
 
-        headers: {
+        headers:{
             Authorization:
             'Bearer ' + token
         }
     });
 
     const data =
-        await response.json();
+    await response.json();
 
     document.getElementById(
-        'result'
+    'result'
     ).innerText =
-        data.message || JSON.stringify(data, null, 2);
+    JSON.stringify(
+        data,
+        null,
+        2
+    );
 }
 
-async function deleteData() {
+async function deleteData(){
 
     const response =
-        await fetch('/api/data', {
+    await fetch('/api/data',{
 
-        method: 'DELETE',
+        method:'DELETE',
 
-        headers: {
+        headers:{
             Authorization:
             'Bearer ' + token
         }
     });
 
     const data =
-        await response.json();
+    await response.json();
 
     document.getElementById(
-        'result'
+    'result'
     ).innerText =
-        data.message || JSON.stringify(data, null, 2);
+    JSON.stringify(
+        data,
+        null,
+        2
+    );
 }
 
-function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    window.location.href = '/';
+function logout(){
+
+    localStorage.clear();
+
+    window.location.href =
+    'index.html';
 }
 
 </script>
