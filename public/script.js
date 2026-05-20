@@ -40,6 +40,8 @@ async function login() {
             payload.role
         );
 
+        document.getElementById('message').innerText = `Token stored.`;
+
         window.location.href =
             '/dashboard.html';
 
